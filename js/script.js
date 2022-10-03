@@ -2,7 +2,7 @@
 let wordArr = ['timeline','terminal','hidden','prevent','undo','sleep','sentimental','dictionary','millionaire', 'document']
 let randomNo = ''
 let scrambledWord=''
-let mp3,timeCheck, word,originalWord,min,sec,pausedMin,pausedSec;
+let mp3,timeCheck, word,originalWord,min,sec,pausedMin,pausedSec,tUpdate;
 let previous=[]
 let count = 3
 let progress = 0
@@ -18,7 +18,28 @@ const difficulty = document.getElementById('difficulty')
 modalDoneBtn.addEventListener('click',changeDisp)
 startBtn.addEventListener('click',startCounting)
 submitBtn.addEventListener('click',submit)
-
+function countDown(){
+    if(count>=0){
+        setTimeout(() => {
+            startCount.style.display='flex'
+            // debugger
+            countNumb.innerHTML = count
+            count--
+            countDown()
+        }, 1000);
+    } else{
+        setTimeout(() => {
+            startCounting()
+            count=3
+        }, 1000);
+        
+    }
+    // if (count == 2) {
+    //     setTimeout(() => {
+    //         welcome()
+    //     }, 1000);
+    // }
+}
 function start(){
     document.querySelector('.video-wrapper').style.display='flex'
     document.querySelector('.main').hidden=true
@@ -61,7 +82,7 @@ function submit(){
             progress += 10
             setProgress()
             if (progress==100){
-                contentbx.innerHTML = `<h2>🥇Perfect!!!</h2 <p>Score::${progress}%</p>`
+                // contentbx.innerHTML = `<h2>🥇Perfect!!!</h2 <p>Score::${progress}%</p>`
             } else{
                 generate()
                 scrambleWords()
@@ -69,6 +90,9 @@ function submit(){
         }else if(!correctword){
             pausedMin = min
             pausedSec = sec
+            // debugger
+            clearTimeout(tUpdate)
+            time.innerHTML=`${pausedMin}:${pausedSec}`
             contentbx.style.display='flex'
             contentbx.innerHTML =`<h2>Oops</h2><p>Incorrect answer entered correct word is ${originalWord}</p><button class="btn btn-light" onclick="resume()">OK</button>`
         } else{
@@ -95,12 +119,7 @@ function setProgress(){
 }
 function startCounting(){
     if (count >= 0){
-        startCount.style.display='flex'
-        countNumb.innerHTML = count
-        count--
-        setTimeout(() => {
-            startCounting()
-        }, 1000); 
+       countDown()
     } else{
         startCount.style.display='none'
         if (startBtn.innerHTML=='<b>NEW GAME</b>'){
@@ -108,13 +127,14 @@ function startCounting(){
                 progress=0
                 setProgress()
                 level()
+                startBtn.setAttribute('disabled','disabled')
                 scrambleWords()
                 timeCheck = setInterval(() => {
                     check()
                 }, 1000);
                 submitBtn.removeAttribute('disabled','disabled')
                 
-            }, 1600);
+            }, 1400);
         }else{
             setTimeout(() => {
                 scrambleWords()
@@ -122,11 +142,6 @@ function startCounting(){
                 startBtn.setAttribute('disabled','disabled')
             }, 1600);
         }
-    }
-    if (count == 2) {
-        setTimeout(() => {
-            welcome()
-        }, 1000);
     }
 }
 function level(){
@@ -160,7 +175,6 @@ function scrambleWords(){
 function scramble(){
     word = wordArr[randomNo]
     originalWord = wordArr[randomNo]
-    debugger
         console.log(`starting`,word);
         for (let i = 0;word.length>0; i++) {
             let rand = Math.floor(Math.random()*word.length)
@@ -182,31 +196,40 @@ function timer(minute,second){
            time.style.color='red'
        }
        time.innerHTML =`${minute}:${second}`
+       tUpdate = setTimeout(() => {
         if(second==0 && minute >=1){
             minute--
             second= 60
             second--
-            setTimeout(() => {
-                timer(minute,second)
-            }, 1000);
+            timer(minute,second)
+        } else if(progress==100){
+            return
         } else{
             second--
-            setTimeout(() => {
-                timer(minute,second)
-            }, 1000);
+            timer(minute,second)
         }
+       }, 1000);
            min=minute
            sec= second
     } else{
         console.log('done');
+        contentbx.style.display='flex'
+        contentbx.innerHTML = `<h2>Time Up⌛!!!</h2><p><strong>Score::${progress}%</strong></p><button class="btn btn-light" onclick="restartGame()" id="timeUpBtn">OK</button>`
     }
-   
 }
 function check(){
     if (time.innerHTML=='0:0'){
-        // alert('Time up')
         reset()
         clearInterval(timeCheck)
+    }
+    if(progress==100){
+        contentbx.style.display='flex'
+        contentbx.innerHTML = `<h2>🥇Perfect!!!</h2 <p><b>Score::${progress}%</b></p><button class="btn btn-light" onclick="restartGame()">OK</button>`
+        reset()
+        clearInterval(timeCheck)
+        min = 0
+        sec = 0
+        time.innerHTML=''
     }
 }
 timeCheck = setInterval(() => {
@@ -220,4 +243,10 @@ function reset(){
     scrambledWord =''
     previous=''
     previous=[]
+}
+function restartGame(){
+    progress=0
+    setProgress()
+    contentbx.style.display='none'
+    document.querySelector('#unScrambledWordInp').value=''
 }

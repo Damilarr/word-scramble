@@ -38,7 +38,7 @@
       </div>
       
       <div class="main px-4 py-4">
-        <div class="d-flex flex-column justify-content-around align-items-center  border border-dark p-3 mb-2">
+        <div class="d-flex flex-column justify-content-around align-items-start  border border-dark p-3 mb-2">
             <h1>Word Scramble</h1>
             <p><b>Player</b>⛹️‍♂️:<b><span id="playerName" class="text-primary">Emmanuel</span></b></p>
         </div>
@@ -59,14 +59,14 @@
         </div>
         
         <div class="d-flex flex-column justify-items-around p-3 border border-dark  mb-2">
-            <input type="text" id="scrambledWordInp" class="form-control mb-1" readonly>
+            <input type="text" id="scrambledWordInp" class="form-control mb-1 bg-white" readonly>
             <input type="text" id="unScrambledWordInp" class="form-control" placeholder="Enter the correct word">
         </div>
         <div class="d-flex justify-content-around align-items-center border border-dark py-1 px-1 mb-2">
             <button class="btn btn-primary" id="submitBtn"><b> SUBMIT</b></button>
             <p class="bg-light timer-body py-1 px-1 pl-3"><b>Timer🕰:<span id="time"></span></b></p>
         </div>
-        <div class="px-2 py-2 border border-dark">
+        <div class="px-2 py-2 border border-dark d-flex flex-column">
             <span><b>Score(%)</b></span>
             <div class="progress">
                 <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">0%</div>
