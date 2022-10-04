@@ -26,7 +26,7 @@ function countDown(){
             countNumb.innerHTML = count
             count--
             countDown()
-        }, 1000);
+        }, 2000);
     } else{
         setTimeout(() => {
             startCounting()
@@ -34,11 +34,11 @@ function countDown(){
         }, 1000);
         
     }
-    // if (count == 2) {
-    //     setTimeout(() => {
-    //         welcome()
-    //     }, 1000);
-    // }
+    if (count == 1) {
+        setTimeout(() => {
+            welcome()
+        }, 1000);
+    }
 }
 function start(){
     document.querySelector('.video-wrapper').style.display='flex'
@@ -72,7 +72,7 @@ function changeDisp(){
 }
 function submit(){
     if(unScrambledWordInp.value){
-        let inp = unScrambledWordInp.value.toLowerCase()
+        let inp = unScrambledWordInp.value.toLowerCase().trim()
         let correctword = wordArr.find(element => {
            return element == inp
         });
