@@ -72,9 +72,9 @@ function changeDisp(){
 }
 function submit(){
     if(unScrambledWordInp.value){
-        let inp = unScrambledWordInp.value.toLowerCase().trim()
+        let inp = unScrambledWordInp.value.toLowerCase()
         let correctword = wordArr.find(element => {
-           return element == inp
+            return element == inp
         });
         console.log(`correctword`,correctword);
         if (correctword){
